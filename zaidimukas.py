@@ -5,7 +5,7 @@ from pygame import mixer
 
 pygame.init()
 
-# ekrano dydis
+# screen size
 screen = pygame.display.set_mode((800, 600))
 
 # background
@@ -16,7 +16,7 @@ mixer.music.load('backgroundss.wav')
 mixer.music.play(-1)
 mixer.music.set_volume(0.1)
 
-# pavadinimas ir icona
+# name and icon
 pygame.display.set_caption("Kosmoso invazija")
 icon = pygame.image.load('ufo 32.png')
 pygame.display.set_icon(icon)
@@ -95,7 +95,7 @@ def isCollision(enemyX, enemyY, LaserX, LaserY):
         return False
 
 
-# zaidimo loop , tam kad zaidimas veiktu visada.
+# Game loop , for window to not turn off after running a code.
 running = True
 while running:
 
@@ -117,7 +117,7 @@ while running:
                 if Laser_state == "ready":
                     Bullet_sound = mixer.Sound('gunsound.wav')
                     Bullet_sound.play()
-                    # Get the current x cordinates of the space ship
+                    # Get the current x coordinates of the space ship
                     LaserX = playerX
                     fire_laser(LaserX, LaserY)
         if event.type == pygame.KEYUP:
@@ -126,13 +126,13 @@ while running:
 
 
     playerX += playerX_change
-    # patikrinti ar neiseina laivas is ribu
+    # checking if player does not goes off from boundaries
     if playerX <= 0:
         playerX = 0
     elif playerX >= 736:
         playerX = 736
 
-    # tikrinti ar priesas neiseina is ribu
+    # checking that enemy wont go off from boundaries
     for i in range(num_of_enemies):
 
         # game over
