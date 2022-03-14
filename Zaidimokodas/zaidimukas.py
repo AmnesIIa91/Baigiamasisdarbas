@@ -35,6 +35,10 @@ EnemyX_change = []
 EnemyY_change = []
 num_of_enemies = 6
 
+# controller support
+
+joysticks = []
+
 for i in range(num_of_enemies):
     EnemyImg.append(pygame.image.load('alien.png'))
     EnemyX.append(random.randint(0, 735))
@@ -58,6 +62,8 @@ font = pygame.font.Font('BTTF.ttf', 15)
 
 testX = 10
 testY = 10
+
+
 
 # Game over text
 over_font = pygame.font.Font('BTTF.ttf', 64)
@@ -95,6 +101,10 @@ def isCollision(enemyX, enemyY, LaserX, LaserY):
         return False
 
 
+for x in range(pygame.joystick.get_count()):
+    joysticks.append(pygame.joystick.Joystick(x))
+    joysticks[-1].init()
+
 # Game loop , for window to not turn off after running a code.
 running = True
 while running:
@@ -118,12 +128,31 @@ while running:
                     Bullet_sound = mixer.Sound('gunsound.wav')
                     Bullet_sound.play()
                     # Get the current x coordinates of the space ship
+
                     LaserX = playerX
                     fire_laser(LaserX, LaserY)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_change = 0.0
 
+        if event.type == pygame.JOYBUTTONDOWN:
+            if event.button == 4 or event.button == 5:
+                Bullet_sound = mixer.Sound('gunsound.wav')
+                Bullet_sound.play()
+                LaserX = playerX
+                fire_laser(LaserX, LaserY)
+
+        if event.type == pygame.JOYHATMOTION:
+            if event.value[0] == 1:
+                playerX_change = 0.5
+
+        if event.type == pygame.JOYHATMOTION:
+            if event.value[0] == -1:
+                playerX_change = -0.5
+
+        if event.type == pygame.JOYHATMOTION:
+            if event.value[0] == 0:
+                playerX_change = 0.0
 
     playerX += playerX_change
     # checking if player does not goes off from boundaries
@@ -167,7 +196,7 @@ while running:
         Laser_state = "ready"
 
     if Laser_state == "fire":
-        fire_laser(LaserX, LaserY, )
+        fire_laser(LaserX, LaserY)
         LaserY -= LaserY_change
 
     player(playerX, playerY)
